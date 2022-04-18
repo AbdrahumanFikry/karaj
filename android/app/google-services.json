@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "390993026330",
+    "firebase_url": "https://karaj-mttweren-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "karaj-mttweren",
+    "storage_bucket": "karaj-mttweren.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:390993026330:android:2dbfdf9a0b3e79b0fa60a3",
+        "android_client_info": {
+          "package_name": "com.mttweren.karaj"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "390993026330-e12omid133ohs2j4ouorseakhrlsd2mg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mttweren.karaj",
+            "certificate_hash": "def66b440a9cf739e073cbc3ee233c5df533e1c9"
+          }
+        },
+        {
+          "client_id": "390993026330-hh41pjuos0hfiap1aks6tdjep2ck42fr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzkDpL02ITSlyKIsIYTYbM6_xt_-V0x1c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "390993026330-hh41pjuos0hfiap1aks6tdjep2ck42fr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "390993026330-2c0ie53eqlbbq6rtpj91ksvkteroblv2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mttweren1.karaj"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:390993026330:android:83dc470348825908fa60a3",
+        "android_client_info": {
+          "package_name": "com.mttweren.karajdb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "390993026330-ic3jdgvm25u68acibpsbh0cul1aoc8i1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mttweren.karajdb",
+            "certificate_hash": "def66b440a9cf739e073cbc3ee233c5df533e1c9"
+          }
+        },
+        {
+          "client_id": "390993026330-hh41pjuos0hfiap1aks6tdjep2ck42fr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDzkDpL02ITSlyKIsIYTYbM6_xt_-V0x1c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "390993026330-hh41pjuos0hfiap1aks6tdjep2ck42fr.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "390993026330-2c0ie53eqlbbq6rtpj91ksvkteroblv2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.mttweren1.karaj"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
