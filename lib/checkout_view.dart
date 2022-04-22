@@ -29,7 +29,7 @@ class _CheckoutViewState extends State<CheckoutView> {
   }
 
   setup() async {
-    hyperpay = await HyperpayPlugin.setup(config: LiveConfig());
+    hyperpay = await HyperpayPlugin.setup(config: TestConfig());
   }
 
   /// Initialize HyperPay session
@@ -42,12 +42,13 @@ class _CheckoutViewState extends State<CheckoutView> {
       amount: 1.0,
       headers: {
         'Authorization':
-            'Bearer OGFjN2E0Yzk3YmRmNDAzNDAxN2JkZjRmMGQ2YjAwM2V8WjR6aFlqRlhmZQ=='
+            'Bearer OGFjN2E0Yzk3YmRmNDAzNDAxN2JkZjRmMGQ2YjAwM2V8WjR6aFlqRlhmZQ==',
+        'merchantTransactionId': "1234567890",
       },
       additionalParams: {
         'currency': 'SAR',
         'paymentType': 'DB',
-        'merchantTransactionId': "123da3wdfsdsds",
+        'merchantTransactionId': "1234567890",
         'customer.email': 'op.op0102569@gmail.com',
         'billing.street1': 'Elsalam ST',
         'billing.city': 'Jeddah',

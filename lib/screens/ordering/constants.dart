@@ -30,10 +30,10 @@ class LiveConfig implements HyperpayConfig {
 // https://wordpresshyperpay.docs.oppwa.com/tutorials/mobile-sdk/integration/server.
 
 //Test Host
-// String _host = 'test.oppwa.com';
+String _host = 'test.oppwa.com';
 
 //Live Host
-String _host = 'oppwa.com';
+// String _host = 'oppwa.com';
 // String _host = 'pay-karaj.info';
 
 Uri _checkoutEndpoint = Uri(

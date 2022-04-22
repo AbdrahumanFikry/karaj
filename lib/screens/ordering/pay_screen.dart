@@ -14,10 +14,6 @@ import 'package:karaj/models/spares.dart';
 import 'package:karaj/screens/orders/order_details.dart';
 import 'package:karaj/screens/spares/details/spares_order_details.dart';
 import 'package:karaj/services/database.dart';
-import 'package:karaj/ui_widgets/input_mask.dart';
-import 'package:intl/intl.dart' as intl;
-import 'package:webview_flutter/webview_flutter.dart';
-
 import 'constants.dart';
 import 'formatters.dart';
 
@@ -67,12 +63,13 @@ class _PayOrderScreenState extends State<PayOrderScreen> {
   }
 
   /// Initialize HyperPay session
-  Future<void> initPaymentSession(
-      BrandType brandType, double amount, Map<String, dynamic> data) async {
+  Future<void> initPaymentSession(BrandType brandType, double amount,
+      Map<String, dynamic> data, String entityId) async {
     CheckoutSettings _checkoutSettings = CheckoutSettings(
       brand: brandType,
       amount: 1.0,
       headers: {
+        'entityId': entityId,
         'Authorization':
             'Bearer OGFjN2E0Yzk3YmRmNDAzNDAxN2JkZjRmMGQ2YjAwM2V8WjR6aFlqRlhmZQ=='
       },
@@ -320,23 +317,41 @@ class _PayOrderScreenState extends State<PayOrderScreen> {
             expiryYear: '20' + _expiryDate.text.split('/')[1],
           );
           try {
+            String id = await Database().generateId();
+
             if (sessionCheckoutID.isEmpty) {
+              final cEntityId = '8ac7a4c97bdf4034017bdf501db60042';
+              final mEntityId = '8ac7a4c97bdf4034017bdf51a47f0048';
+              final entityId =
+                  brandType == BrandType.mada ? mEntityId : cEntityId;
+
               final data = {
                 'currency': 'SAR',
                 'paymentType': 'DB',
+                'merchantTransactionId': id,
+                'customer.email':
+                    FirebaseAuth.instance.currentUser?.phoneNumber,
+                'billing.street1': 'Jeddah',
+                'billing.city': 'Jeddah',
+                'billing.state': 'Jeddah',
+                'billing.country': 'SA',
+                'billing.postcode': '1111',
+                'customer.givenName':
+                    FirebaseAuth.instance.currentUser?.displayName,
+                'customer.surname':
+                    FirebaseAuth.instance.currentUser?.displayName,
+                'entityId': entityId
               };
               print(data.toString());
-              await initPaymentSession(brandType, lOrder.totalPrice, data);
+              await initPaymentSession(
+                  brandType, lOrder.totalPrice, data, entityId);
             }
-            final result = await hyperpay.pay(
-              card,
-            );
+            final result = await hyperpay.pay(card);
             print('Payment result ::::: $result');
             switch (result) {
               case PaymentStatus.successful:
                 sessionCheckoutID = '';
                 Get.find<OrderingController>().order.payed = 1;
-                String id = await Database().generateId();
                 Get.find<OrderingController>().order.id = id;
                 await PaymentController.createOrderPayment(
                   forId: FirebaseAuth.instance.currentUser?.uid,
@@ -376,6 +391,8 @@ class _PayOrderScreenState extends State<PayOrderScreen> {
               ),
             );
           } catch (exception) {
+            print("exception :: " + exception.toString());
+
             Get.back();
             GetxWidgetHelpers.mSnackBar("خطاء", 'عمليه فاشله');
           }
@@ -470,9 +487,18 @@ class _PayOrderScreenState extends State<PayOrderScreen> {
             final data = {
               'currency': 'SAR',
               'paymentType': 'DB',
+              'merchantTransactionId': lOrder.id,
+              'customer.email': lOrder.userPhone,
+              'billing.street1': 'Jeddah',
+              'billing.city': 'Jeddah',
+              'billing.state': 'Jeddah',
+              'billing.country': 'SA',
+              'billing.postcode': '1111',
+              'customer.givenName': lOrder.userName,
+              'customer.surname': lOrder.userName
             };
             print(data.toString());
-            await initPaymentSession(brandType, lOrder.totalPrice, data);
+            await initPaymentSession(brandType, lOrder.totalPrice, data, '');
           }
           final result = await hyperpay.pay(
             card,
