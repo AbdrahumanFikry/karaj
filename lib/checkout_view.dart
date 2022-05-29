@@ -42,7 +42,7 @@ class _CheckoutViewState extends State<CheckoutView> {
       amount: 1.0,
       headers: {
         'Authorization':
-            'Bearer OGFjN2E0Yzk3YmRmNDAzNDAxN2JkZjRmMGQ2YjAwM2V8WjR6aFlqRlhmZQ==',
+            'Bearer OGFjOWE0Y2M4MGQ2NDE1MDAxODBlZmM0ZTA4MzBjOWV8WjVwNGZXbVQ3Sw==',
         'merchantTransactionId': "1234567890",
       },
       additionalParams: {

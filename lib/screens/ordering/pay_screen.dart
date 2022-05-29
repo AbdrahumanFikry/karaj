@@ -71,7 +71,7 @@ class _PayOrderScreenState extends State<PayOrderScreen> {
       headers: {
         'entityId': entityId,
         'Authorization':
-            'Bearer OGFjN2E0Yzk3YmRmNDAzNDAxN2JkZjRmMGQ2YjAwM2V8WjR6aFlqRlhmZQ=='
+            'Bearer  OGFjOWE0Y2M4MGQ2NDE1MDAxODBlZmM0ZTA4MzBjOWV8WjVwNGZXbVQ3Sw=='
       },
       additionalParams: data ?? {},
     );
