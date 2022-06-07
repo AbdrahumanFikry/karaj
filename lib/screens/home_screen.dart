@@ -21,8 +21,6 @@ import 'package:karaj/ui_widgets/components/walt_card.dart';
 import 'package:karaj/ui_widgets/home_card.dart';
 
 class HomeScreen extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     bool isEnglish = Get.locale.languageCode == 'en';
@@ -49,30 +47,37 @@ class HomeScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-
                         FadeAnimation(
                           delay: 1.4,
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: IconButton(icon: Icon(Icons.menu_rounded, size: 30.0, color: Get.theme.backgroundColor,), onPressed: () => Get.to(MainTabsContent(isShop: controller.user.isShop))),
+                            child: IconButton(
+                                icon: Icon(
+                                  Icons.menu_rounded,
+                                  size: 30.0,
+                                  color: Get.theme.backgroundColor,
+                                ),
+                                onPressed: () => Get.to(MainTabsContent(
+                                    isShop: controller.user.isShop))),
                           ),
                         ),
-
                         FadeAnimation(
                           delay: 1.5,
                           child: Padding(
                             padding: const EdgeInsets.only(top: 4.0),
                             child: InkWell(
                               onTap: () {
-                                LocalizationService().changeLocale(isEnglish ? 'عربي' : 'English');
+                                LocalizationService().changeLocale(
+                                    isEnglish ? 'عربي' : 'English');
                               },
                               child: Container(
                                 padding: EdgeInsets.only(left: 15, right: 15),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(5.0),
-                                    color: Get.theme.backgroundColor
-                                ),
-                                child: Text(isEnglish ? "arabic".tr : "english".tr, style: TextStyle(fontSize: 13.0)),
+                                    color: Get.theme.backgroundColor),
+                                child: Text(
+                                    isEnglish ? "arabic".tr : "english".tr,
+                                    style: TextStyle(fontSize: 13.0)),
                               ),
                             ),
                           ),
@@ -84,75 +89,89 @@ class HomeScreen extends StatelessWidget {
                       margin: EdgeInsets.only(top: 27.0),
                       child: FadeAnimation(
                         delay: 1.6,
-                        child: controller.user.isDriver ? SizedBox.shrink() : Text('services'.tr, style: TextStyle(color: Get.theme.backgroundColor, fontWeight: FontWeight.bold, fontSize: 27.0)),
+                        child: controller.user.isDriver
+                            ? SizedBox.shrink()
+                            : Text('services'.tr,
+                                style: TextStyle(
+                                    color: Get.theme.backgroundColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 27.0)),
                       ),
                     ),
-                   /* FadeAnimation(
+                    /* FadeAnimation(
                       delay: 1.6,
                       child: controller.user.isDriver ? startWorkSwitchCard(controller) : onRideCardForUser(controller),
                     ),*/
 
-                    !controller.user.isDriver && !controller.user.isShop ? Container(
-                      margin: EdgeInsets.only(top: 15.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: HomeCard(
-                              image: 'assets/images/vehicle1.jpg',
-                              text: "orderType1".tr,
-                              navTo: SelectLocation(
-                                orderType: 1,
-                                orderTypeString: "نقل وتنزيل",
-                              ),
-                              checkUserOnRIDE: controller.user.isOnRide ?? false,
-                              delay: 1.6,
-                            ),
-                          ),
-                          SizedBox(width: 15.0),
-                          Expanded(
-                            child: HomeCard(
-                              image: 'assets/images/vehicle2.jpg',
-                              text: "orderType2".tr,
-                              navTo: SelectLocation(
-                                orderType: 2,
-                                orderTypeString: "نقل تحميل تركيب",
-                              ),
-                              checkUserOnRIDE: controller.user.isOnRide ?? false,
-                              delay: 1.7,
+                    !controller.user.isDriver && !controller.user.isShop
+                        ? Container(
+                            margin: EdgeInsets.only(top: 15.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Expanded(
+                                  child: HomeCard(
+                                    image: 'assets/images/vehicle1.jpg',
+                                    text: "orderType1".tr,
+                                    navTo: SelectLocation(
+                                      orderType: 1,
+                                      orderTypeString: "نقل وتنزيل",
+                                    ),
+                                    checkUserOnRIDE:
+                                        controller.user.isOnRide ?? false,
+                                    delay: 1.6,
+                                  ),
+                                ),
+                                SizedBox(width: 15.0),
+                                Expanded(
+                                  child: HomeCard(
+                                    image: 'assets/images/vehicle2.jpg',
+                                    text: "orderType2".tr,
+                                    navTo: SelectLocation(
+                                      orderType: 2,
+                                      orderTypeString: "نقل تحميل تركيب",
+                                    ),
+                                    checkUserOnRIDE:
+                                        controller.user.isOnRide ?? false,
+                                    delay: 1.7,
+                                  ),
+                                )
+                              ],
                             ),
                           )
-                        ],
-                      ),
-                    ) : SizedBox.shrink(),
-
+                        : SizedBox.shrink(),
                     Container(
                       margin: EdgeInsets.symmetric(vertical: 25.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          !controller.user.isDriver ? !controller.user.isShop ? Expanded(
-                            child: HomeCard(
-                              image: 'assets/images/spares.jpg',
-                              text: 'spares'.tr,
-                              navTo: RequestSparesScreen(),
-                              delay: 1.8,
-                            ),
-                          ) : Expanded(
-                            child: HomeCard(
-                              icon: Icons.receipt_long,
-                              text: 'browseRequests'.tr,
-                              callFunction: () => Get.to(MainTabsContent(isShop: true)),
-                              delay: 1.6,
-                            ),
-                          ) : Expanded(
-                            child: HomeCard(
-                              icon: Icons.receipt_long,
-                              text: 'browseRequests'.tr,
-                              callFunction: () => startWorking(),
-                              delay: 1.6,
-                            ),
-                          ),
+                          !controller.user.isDriver
+                              ? !controller.user.isShop
+                                  ? Expanded(
+                                      child: HomeCard(
+                                        image: 'assets/images/spares.jpg',
+                                        text: 'spares'.tr,
+                                        navTo: RequestSparesScreen(),
+                                        delay: 1.8,
+                                      ),
+                                    )
+                                  : Expanded(
+                                      child: HomeCard(
+                                        icon: Icons.receipt_long,
+                                        text: 'browseRequests'.tr,
+                                        callFunction: () => Get.to(
+                                            MainTabsContent(isShop: true)),
+                                        delay: 1.6,
+                                      ),
+                                    )
+                              : Expanded(
+                                  child: HomeCard(
+                                    icon: Icons.receipt_long,
+                                    text: 'browseRequests'.tr,
+                                    callFunction: () => startWorking(),
+                                    delay: 1.6,
+                                  ),
+                                ),
                           SizedBox(width: 15.0),
                           Expanded(
                             child: HomeCard(
@@ -165,52 +184,57 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
                     ),
-
-                    controller.user.isSos ? FadeAnimation(
-                      delay: 1.6,
-                      child: Container(
-                        width: Get.width,
-                        child: normalFlatButtonWidget(
-                          context: context,
-                          text: 'sosRequests'.tr,
-                          padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: 10.0),
-                          radius: 5.0,
-                          callFunction: () async{
-                            Get.to(SosRequests());
-                          },
-                        ),
-                      ),
-                    ): SizedBox.shrink(),
-
-
+                    controller.user.isSos
+                        ? FadeAnimation(
+                            delay: 1.6,
+                            child: Container(
+                              width: Get.width,
+                              child: normalFlatButtonWidget(
+                                context: context,
+                                text: 'sosRequests'.tr,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 0.0, vertical: 10.0),
+                                radius: 5.0,
+                                callFunction: () async {
+                                  Get.to(SosRequests());
+                                },
+                              ),
+                            ),
+                          )
+                        : SizedBox.shrink(),
                     FadeAnimation(
                       delay: 1.6,
-                      child: controller.user.isDriver ? startWorkSwitchCard(controller) : SizedBox.shrink(),
+                      child: controller.user.isDriver
+                          ? startWorkSwitchCard(controller)
+                          : SizedBox.shrink(),
                     ),
-
-                    controller.user.isOnRide == true && controller.user.onOrderID != null ? FadeAnimation(
-                      delay: 1.8,
-                      child: InkWell(
-                        onTap: () {
-                          Get.to(OnOrderMap(orderID: controller.user.onOrderID));
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(bottom: Get.height * 0.07, top: Get.height * 0.02),
-                          width: Get.width,
-                          padding: EdgeInsets.all(15.0),
-                          decoration: BoxDecoration(
-                              color: Colors.grey[200],
-                              borderRadius: BorderRadius.circular(15.0)
-                          ),
-                          child: ListTile(
-                            leading: Icon(Icons.info),
-                            title: Text('${"resumeOrder".tr}'),
-                          ),
-                        ),
-                      ),
-                    ) : SizedBox.shrink(),
+                    controller.user.isOnRide == true &&
+                            controller.user.onOrderID != null
+                        ? FadeAnimation(
+                            delay: 1.8,
+                            child: InkWell(
+                              onTap: () {
+                                Get.to(OnOrderMap(
+                                    orderID: controller.user.onOrderID));
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                    bottom: Get.height * 0.07,
+                                    top: Get.height * 0.02),
+                                width: Get.width,
+                                padding: EdgeInsets.all(15.0),
+                                decoration: BoxDecoration(
+                                    color: Colors.grey[200],
+                                    borderRadius: BorderRadius.circular(15.0)),
+                                child: ListTile(
+                                  leading: Icon(Icons.info),
+                                  title: Text('${"resumeOrder".tr}'),
+                                ),
+                              ),
+                            ),
+                          )
+                        : SizedBox.shrink(),
                     SizedBox(height: 35.0),
-
                   ],
                 ),
               ),
@@ -218,103 +242,106 @@ class HomeScreen extends StatelessWidget {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Get.find<AuthController>().signOut();
-          },
-          backgroundColor: Color(0xFF34B55E),
-          child: Icon(Icons.logout)
-        ),
+            onPressed: () {
+              Get.find<AuthController>().signOut();
+            },
+            backgroundColor: Color(0xFF34B55E),
+            child: Icon(Icons.logout)),
       ),
     );
-
   }
 
   Widget startWorkSwitchCard(UserController controller) {
-    return Obx(
-        () {
-          if(controller.user.isOnRide == true && controller.user.onOrderID != null) {
-            return SizedBox.shrink();
-          } else {
-            Widget text = Container(key: ValueKey<int>(controller.user.isOnline ? 0 : 1),child: Text(controller.user.isOnline ? "stopWork".tr : "startWork".tr, style: TextStyle(color: Color(0xFF404b69), fontWeight: FontWeight.bold, fontSize: 27.0)));
-            return GestureDetector(
-              onTap: () async{
-                bool val = !controller.user.isOnline;
-                if(val == true && await Helpers.checkLocationPermission()) {
-                  controller.setDriverOnline(val);
-                } else {
-                  controller.setDriverOnline(false);
-                }
-              },
-              child: Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Expanded(
-                      child: AnimatedSwitcher(
-                          duration: Duration(milliseconds: 350),
-                          child: controller.user.isOnline ? text : text,
-                          switchInCurve: Curves.bounceIn,
-                          switchOutCurve: Curves.bounceOut,
-                      ),
-                    ),
-                    SizedBox(width: 15),
-                    Container(
-                        width: 150,
-                        height: 120,
-                        child: FlareActor("assets/flr/SmileySwitch.flr", animation: controller.user.isOnline ? "On" : "Off", fit: BoxFit.contain))
-           /*       Switch(
+    return Obx(() {
+      if (controller.user.isOnRide == true &&
+          controller.user.onOrderID != null) {
+        return SizedBox.shrink();
+      } else {
+        Widget text = Container(
+            key: ValueKey<int>(controller.user.isOnline ? 0 : 1),
+            child: Text(
+                controller.user.isOnline ? "stopWork".tr : "startWork".tr,
+                style: TextStyle(
+                    color: Color(0xFF404b69),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 27.0)));
+        return GestureDetector(
+          onTap: () async {
+            bool val = !controller.user.isOnline;
+            if (val == true && await Helpers.checkLocationPermission()) {
+              controller.setDriverOnline(val);
+            } else {
+              controller.setDriverOnline(false);
+            }
+          },
+          child: Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  child: AnimatedSwitcher(
+                    duration: Duration(milliseconds: 350),
+                    child: controller.user.isOnline ? text : text,
+                    switchInCurve: Curves.bounceIn,
+                    switchOutCurve: Curves.bounceOut,
+                  ),
+                ),
+                SizedBox(width: 15),
+                Container(
+                    width: 150,
+                    height: 120,
+                    child: FlareActor("assets/flr/SmileySwitch.flr",
+                        animation: controller.user.isOnline ? "On" : "Off",
+                        fit: BoxFit.contain))
+                /*       Switch(
                       activeColor: Get.theme.primaryColor,
                       value: controller.user.isOnline,
                       onChanged: (val) async {
 
                       },
                     )*/
-                  ],
-                ),
-              ),
-            );
-          }
-        }
-    );
-
-
+              ],
+            ),
+          ),
+        );
+      }
+    });
   }
 
   void startWorking() async {
-      Get.to(DriverLookingForOrderScreen());
+    Get.to(DriverLookingForOrderScreen());
   }
 
   Widget onRideCardForUser(UserController controller) {
-    return Obx(
-        () {
-          if(controller.user.isOnRide == true && controller.user.onOrderID != null) {
-            return InkWell(
-              onTap: () {
-                Get.to(OnOrderMap(orderID: controller.user.onOrderID));
-              },
-              child: Container(
-                margin: EdgeInsets.only(bottom: Get.height * 0.07, top: Get.height * 0.07),
-                width: Get.width,
-                padding: EdgeInsets.all(15.0),
-                decoration: BoxDecoration(
-                    color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(15.0)
-                ),
-                child: ListTile(
-                  leading: Icon(Icons.info),
-                  title: Text('${"resumeOrder".tr}'),
-                ),
-              ),
-            );
-          } else {
-            return Text('howCanHelp'.tr, style: TextStyle(color: Color(0xFF404b69), fontWeight: FontWeight.bold, fontSize: 45.0));
-          }
-        }
-    );
-
-
+    return Obx(() {
+      if (controller.user.isOnRide == true &&
+          controller.user.onOrderID != null) {
+        return InkWell(
+          onTap: () {
+            Get.to(OnOrderMap(orderID: controller.user.onOrderID));
+          },
+          child: Container(
+            margin: EdgeInsets.only(
+                bottom: Get.height * 0.07, top: Get.height * 0.07),
+            width: Get.width,
+            padding: EdgeInsets.all(15.0),
+            decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(15.0)),
+            child: ListTile(
+              leading: Icon(Icons.info),
+              title: Text('${"resumeOrder".tr}'),
+            ),
+          ),
+        );
+      } else {
+        return Text('howCanHelp'.tr,
+            style: TextStyle(
+                color: Color(0xFF404b69),
+                fontWeight: FontWeight.bold,
+                fontSize: 45.0));
+      }
+    });
   }
 }
-
-

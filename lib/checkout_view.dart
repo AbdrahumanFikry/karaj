@@ -29,7 +29,7 @@ class _CheckoutViewState extends State<CheckoutView> {
   }
 
   setup() async {
-    hyperpay = await HyperpayPlugin.setup(config: TestConfig());
+    hyperpay = await HyperpayPlugin.setup(config: LiveConfig());
   }
 
   /// Initialize HyperPay session
@@ -39,7 +39,7 @@ class _CheckoutViewState extends State<CheckoutView> {
   ) async {
     CheckoutSettings _checkoutSettings = CheckoutSettings(
       brand: brandType,
-      amount: 1.0,
+      amount: 10.0,
       headers: {
         'Authorization':
             'Bearer OGFjOWE0Y2M4MGQ2NDE1MDAxODBlZmM0ZTA4MzBjOWV8WjVwNGZXbVQ3Sw==',
@@ -162,7 +162,8 @@ class _CheckoutViewState extends State<CheckoutView> {
 
                                   // Make a CardInfo from the controllers
                                   CardInfo card = CardInfo(
-                                    holder: holderNameController.text,
+                                    holder:
+                                        holderNameController.text.toUpperCase(),
                                     cardNumber: cardNumberController.text
                                         .replaceAll(' ', ''),
                                     cvv: cvvController.text,

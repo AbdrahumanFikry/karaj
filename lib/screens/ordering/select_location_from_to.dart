@@ -17,19 +17,24 @@ import 'package:karaj/services/googleMapApiMethods.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class SelectLocation extends StatefulWidget {
-
   final int orderType;
   final String orderTypeString;
   final bool isSpareOrder;
   final Map<String, dynamic> spare;
-  const SelectLocation({Key key, this.orderType, this.orderTypeString, this.isSpareOrder = false, this.spare}) : super(key: key);
+
+  const SelectLocation(
+      {Key key,
+      this.orderType,
+      this.orderTypeString,
+      this.isSpareOrder = false,
+      this.spare})
+      : super(key: key);
 
   @override
   _SelectLocationState createState() => _SelectLocationState();
 }
 
 class _SelectLocationState extends State<SelectLocation> {
-
   OrderingController _orderCtrl = Get.find();
   PanelController _panelController = PanelController();
   BitmapDescriptor fromMarker;
@@ -46,16 +51,14 @@ class _SelectLocationState extends State<SelectLocation> {
     zoom: 5,
   );
 
-
   Position currentPosition;
   bool onPickSelected = true;
-
 
   @override
   void initState() {
     _orderCtrl.clear();
 
-    if(widget.isSpareOrder) {
+    if (widget.isSpareOrder) {
       _orderCtrl.order.isSpareOrder = true;
       _orderCtrl.order.spareID = widget.spare["id"];
       _orderCtrl.order.active = false;
@@ -68,6 +71,8 @@ class _SelectLocationState extends State<SelectLocation> {
       _orderCtrl.order.orderTypeString = widget.orderTypeString ?? "";
     }
 
+    _doSomething();
+
     _markers.add(Marker(
         markerId: MarkerId('userLocation'),
         position: _center,
@@ -78,37 +83,41 @@ class _SelectLocationState extends State<SelectLocation> {
   }
 
   void asyncFunction() async {
-    await BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(35, 35)), 'assets/images/location.png')
+    await BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(35, 35)),
+            'assets/images/location.png')
         .then((d) {
       fromMarker = d;
     });
 
-    await BitmapDescriptor.fromAssetImage(ImageConfiguration(size: Size(35, 35)), 'assets/images/marker.png')
+    await BitmapDescriptor.fromAssetImage(
+            ImageConfiguration(size: Size(35, 35)), 'assets/images/marker.png')
         .then((d) {
       toMarker = d;
     });
   }
 
-  void getCurrentLocation() async {
-
+  Future<void> getCurrentLocation() async {
     try {
-      Position p = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      print('::::::::::::::::::::::::::::::::::::::');
+      Position p = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
       currentPosition = p;
       LatLng latLngPosition = LatLng(p.latitude, p.longitude);
-      CameraPosition cameraPosition = new CameraPosition(target: latLngPosition, zoom: 14);
+      CameraPosition cameraPosition =
+          new CameraPosition(target: latLngPosition, zoom: 14);
       mapCtrl.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
-      if(!widget.isSpareOrder) {
-        String address = await GoogleMapApiMethods.getFullAddress(p.latitude, p.longitude);
+      if (!widget.isSpareOrder) {
+        String address =
+            await GoogleMapApiMethods.getFullAddress(p.latitude, p.longitude);
         OrderModel _o = _orderCtrl.order;
         _o.fromFullAddress = address;
         _orderCtrl.setOrder = _o;
       }
-
     } catch (e) {
       print("error on catching current location $e");
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -127,8 +136,9 @@ class _SelectLocationState extends State<SelectLocation> {
             onMapCreated: (GoogleMapController ctrl) async {
               _controllerGoogleMap.complete(ctrl);
               mapCtrl = ctrl;
-              if(widget.isSpareOrder) {
-                await updateFrom(lat: widget.spare["fromLat"],lng: widget.spare["fromLng"]);
+              if (widget.isSpareOrder) {
+                await updateFrom(
+                    lat: widget.spare["fromLat"], lng: widget.spare["fromLng"]);
                 getCurrentLocation();
               } else {
                 getCurrentLocation();
@@ -142,9 +152,7 @@ class _SelectLocationState extends State<SelectLocation> {
               _onCamMove();
             },
           ),
-
-          Obx(
-              () => Positioned(
+          Obx(() => Positioned(
                 top: 15.0,
                 right: 0,
                 left: 0,
@@ -154,73 +162,90 @@ class _SelectLocationState extends State<SelectLocation> {
                     children: [
                       GestureDetector(
                         onTap: () async {
-                          if(!widget.isSpareOrder) {
+                          if (!widget.isSpareOrder) {
                             var place = await Get.to(FindPlaceOnMap());
-                            if(place != null) {
-                              Map<String, dynamic> placeData = jsonDecode(place);
-                              updateFrom(lng: placeData["lng"],lat: placeData["lat"]);
+                            if (place != null) {
+                              Map<String, dynamic> placeData =
+                                  jsonDecode(place);
+                              updateFrom(
+                                  lng: placeData["lng"], lat: placeData["lat"]);
                             }
                           }
-
                         },
                         child: Container(
                           padding: EdgeInsets.all(10.0),
                           margin: EdgeInsets.symmetric(vertical: 5.0),
-                          decoration: BoxDecoration(
-                              color: Colors.white
-                          ),
+                          decoration: BoxDecoration(color: Colors.white),
                           child: Row(
                             children: [
-                              Icon(Icons.location_history, color: Color(0xffff5267)),
+                              Icon(Icons.location_history,
+                                  color: Color(0xffff5267)),
                               SizedBox(width: 5),
-                              Text('pickupFrom'.tr, style: TextStyle(fontSize: 11.0, color: Colors.grey)),
+                              Text('pickupFrom'.tr,
+                                  style: TextStyle(
+                                      fontSize: 11.0, color: Colors.grey)),
                               SizedBox(width: 5),
-                              _orderCtrl.onLoading && _orderCtrl.step == 0? Container(
-                                width: 10,
-                                height: 10,
-                                child: CircularProgressIndicator(),
-                              ) : Expanded(child: Text('${_orderCtrl.order.fromFullAddress} ', overflow: TextOverflow.ellipsis,)),
-
+                              _orderCtrl.onLoading && _orderCtrl.step == 0
+                                  ? Container(
+                                      width: 10,
+                                      height: 10,
+                                      child: CircularProgressIndicator(),
+                                    )
+                                  : Expanded(
+                                      child: Text(
+                                      '${_orderCtrl.order.fromFullAddress} ',
+                                      overflow: TextOverflow.ellipsis,
+                                    )),
                             ],
                           ),
                         ),
                       ),
-
-                      _orderCtrl.step > 0 ? GestureDetector(
-                        onTap: () async {
-                          var place = await Get.to(FindPlaceOnMap());
-                          if(place != null) {
-                            Map<String, dynamic> placeData = jsonDecode(place);
-                            updateTo(lng: placeData["lng"],lat: placeData["lat"]);
-                          }
-                        },
-                        child: Container(
-                          padding: EdgeInsets.all(10.0),
-                          margin: EdgeInsets.symmetric(vertical: 5.0),
-                          decoration: BoxDecoration(
-                              color: Colors.white
-                          ),
-                          child: Row(
-                            children: [
-                              Icon(Icons.location_on, color: Color(0xff228cff)),
-                              SizedBox(width: 5),
-                              Text('pickupTo'.tr, style: TextStyle(fontSize: 11.0, color: Colors.grey)),
-                              SizedBox(width: 5),
-                              _orderCtrl.onLoading ? Container(
-                                width: 10,
-                                height: 10,
-                                child: CircularProgressIndicator(),
-                              ) : Expanded(child: Text('${_orderCtrl.order.toFullAddress}', overflow: TextOverflow.ellipsis,)),
-                            ],
-                          ),
-                        ),
-                      ) : SizedBox.shrink()
+                      _orderCtrl.step > 0
+                          ? GestureDetector(
+                              onTap: () async {
+                                var place = await Get.to(FindPlaceOnMap());
+                                if (place != null) {
+                                  Map<String, dynamic> placeData =
+                                      jsonDecode(place);
+                                  updateTo(
+                                      lng: placeData["lng"],
+                                      lat: placeData["lat"]);
+                                }
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(10.0),
+                                margin: EdgeInsets.symmetric(vertical: 5.0),
+                                decoration: BoxDecoration(color: Colors.white),
+                                child: Row(
+                                  children: [
+                                    Icon(Icons.location_on,
+                                        color: Color(0xff228cff)),
+                                    SizedBox(width: 5),
+                                    Text('pickupTo'.tr,
+                                        style: TextStyle(
+                                            fontSize: 11.0,
+                                            color: Colors.grey)),
+                                    SizedBox(width: 5),
+                                    _orderCtrl.onLoading
+                                        ? Container(
+                                            width: 10,
+                                            height: 10,
+                                            child: CircularProgressIndicator(),
+                                          )
+                                        : Expanded(
+                                            child: Text(
+                                            '${_orderCtrl.order.toFullAddress}',
+                                            overflow: TextOverflow.ellipsis,
+                                          )),
+                                  ],
+                                ),
+                              ),
+                            )
+                          : SizedBox.shrink()
                     ],
                   ),
                 ),
-              )
-          ),
-
+              )),
           Positioned(
             bottom: 15.0,
             right: 0,
@@ -228,19 +253,23 @@ class _SelectLocationState extends State<SelectLocation> {
             child: Padding(
               padding: const EdgeInsets.all(15.0),
               child: flatButtonWidget(
-                context: context,
-                callFunction: () => _doSomething(),
-                text: _orderCtrl.step == 2 ? 'selectVan'.tr : _orderCtrl.step == 0 ? 'confirmPickupLocation'.tr : 'confirmDropOffLocation'.tr
-              ),
+                  context: context,
+                  callFunction: () => _doSomething(),
+                  text: _orderCtrl.step == 2
+                      ? 'selectVan'.tr
+                      : _orderCtrl.step == 0
+                          ? 'confirmPickupLocation'.tr
+                          : 'confirmDropOffLocation'.tr),
             ),
           ),
-
-          _orderCtrl.step >= 2 ? SlidingUpPanel(
-            controller: _panelController,
-            backdropEnabled: true,
-            panel: SelectVehicleTypePanel(),
-            borderRadius: BorderRadius.circular(15.0),
-          ) : SizedBox.shrink(),
+          _orderCtrl.step >= 2
+              ? SlidingUpPanel(
+                  controller: _panelController,
+                  backdropEnabled: true,
+                  panel: SelectVehicleTypePanel(),
+                  borderRadius: BorderRadius.circular(15.0),
+                )
+              : SizedBox.shrink(),
         ],
       ),
     );
@@ -248,7 +277,8 @@ class _SelectLocationState extends State<SelectLocation> {
 
   void _onCamMove() async {
     if (_markers.isNotEmpty) {
-      _markers.remove(_markers.firstWhere((Marker marker) => marker.markerId.value == "userLocation"));
+      _markers.remove(_markers.firstWhere(
+          (Marker marker) => marker.markerId.value == "userLocation"));
     }
     var newMarker = Marker(
       markerId: MarkerId('userLocation'),
@@ -259,7 +289,7 @@ class _SelectLocationState extends State<SelectLocation> {
   }
 
   void _doSomething() async {
-   /* if (_orderCtrl.step == 2) {
+    /* if (_orderCtrl.step == 2) {
       _markers.where((Marker marker) {
           if(marker.markerId.value == "userLocation") {
             _markers.remove(marker);
@@ -269,12 +299,13 @@ class _SelectLocationState extends State<SelectLocation> {
       Get.to(SelectVehicleType());
       return;
     }*/
-    if(_orderCtrl.step == 0) {
+    if (_orderCtrl.step == 0) {
       updateFrom(lat: _center.latitude, lng: _center.longitude);
-    } else if(_orderCtrl.step >= 1) {
+    } else if (_orderCtrl.step >= 1) {
       await updateTo(lat: _center.latitude, lng: _center.longitude);
-      print("============================ _panelController.isAttached : ${_panelController.isAttached}");
-      if(_panelController.isAttached) {
+      print(
+          "============================ _panelController.isAttached : ${_panelController.isAttached}");
+      if (_panelController.isAttached) {
         _panelController.open();
       } else {
         Future.delayed(Duration(seconds: 1), () {
@@ -299,7 +330,7 @@ class _SelectLocationState extends State<SelectLocation> {
     ));
     _orderCtrl.setOrder = _o;
     _orderCtrl.setLoading = false;
-    moveMapCamera(lat,lng);
+    moveMapCamera(lat, lng);
   }
 
   Future<void> updateTo({double lat, double lng}) async {
@@ -319,20 +350,23 @@ class _SelectLocationState extends State<SelectLocation> {
     _orderCtrl.setOrder = _o;
     _orderCtrl.setLoading = false;
     _orderCtrl.fetchFloors();
-    moveMapCamera(lat,lng);
+    moveMapCamera(lat, lng);
   }
 
   void moveMapCamera(double lat, double lng) {
     LatLng latLngPosition = LatLng(lat, lng);
-    CameraPosition cameraPosition = new CameraPosition(target: latLngPosition, zoom: 14);
+    CameraPosition cameraPosition =
+        new CameraPosition(target: latLngPosition, zoom: 14);
     mapCtrl.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
 
   drawPolyLine(LatLng from, LatLng to) async {
-    Map<String, String> mapReturned = await GoogleMapApiMethods.getDirections(from, to);
+    Map<String, String> mapReturned =
+        await GoogleMapApiMethods.getDirections(from, to);
     String polylineEndpoint = mapReturned["polylines"];
     String totalDuration = mapReturned["totalDuration"];
-    List<LatLng> pLineCoordinates = await Helpers.decodeEndpointPolyline(polylineEndpoint);
+    List<LatLng> pLineCoordinates =
+        await Helpers.decodeEndpointPolyline(polylineEndpoint);
     setState(() {
       polylineSet.clear();
       Polyline polyline = Polyline(
